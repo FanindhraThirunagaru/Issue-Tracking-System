@@ -1,0 +1,75 @@
+CREATE TABLE `employees` (
+  `employeeId` varchar(255) PRIMARY KEY,
+  `firstName` varchar(255),
+  `middleName` varchar(255),
+  `lastName` varchar(255),
+  `mailId` varchar(255),
+  `mobileNumber` varchar(255)
+);
+
+CREATE TABLE `departments` (
+  `departmentId` varchar(255) PRIMARY KEY,
+  `departmentName` varchar(255)
+);
+
+CREATE TABLE `users` (
+  `userName` varchar(255) PRIMARY KEY,
+  `userPassword` varchar(255) NOT NULL,
+  `userRole` ENUM ('Admin', 'ProjectManager', 'Developer', 'Demo'),
+  `employeeId` varchar(255),
+  `departmentId` varchar(255)
+);
+
+CREATE TABLE `tickets` (
+  `ticketId` int PRIMARY KEY,
+  `description` varchar(255),
+  `title` varchar(255) NOT NULL,
+  `priority` ENUM ('highLevel', 'mediumLevel', 'lowLevel') NOT NULL,
+  `createdBy` varchar(255) NOT NULL,
+  `assignedTo` varchar(255),
+  `ticketType` varchar(255),
+  `status` ENUM ('open', 'inProgress', 'closed') NOT NULL,
+  `createdAt` timestamp NOT NULL,
+  `updatedAt` timestamp,
+  `projectName` varchar(255) NOT NULL,
+  `projectId` varchar(255)
+);
+
+CREATE TABLE `projects` (
+  `projectId` varchar(255) PRIMARY KEY,
+  `projectName` varchar(255) UNIQUE NOT NULL,
+  `description` varchar(200)
+);
+
+CREATE TABLE `comments` (
+  `commentedBy` varchar(255),
+  `message` varchar(255),
+  `createdAt` timestamp,
+  `ticketID` int
+);
+
+CREATE TABLE `ticket_History` (
+  `ticketId` int,
+  `variable` varchar(255),
+  `oldValue` varchar(255),
+  `newValue` varchar(255),
+  `updatedAt` timestamp
+);
+
+ALTER TABLE `employees` ADD FOREIGN KEY (`employeeId`) REFERENCES `users` (`employeeId`);
+
+ALTER TABLE `departments` ADD FOREIGN KEY (`departmentId`) REFERENCES `users` (`departmentId`);
+
+ALTER TABLE `tickets` ADD FOREIGN KEY (`assignedTo`) REFERENCES `users` (`userName`);
+
+ALTER TABLE `tickets` ADD FOREIGN KEY (`createdBy`) REFERENCES `users` (`userName`);
+
+ALTER TABLE `tickets` ADD FOREIGN KEY (`projectName`) REFERENCES `projects` (`projectName`);
+
+ALTER TABLE `tickets` ADD FOREIGN KEY (`projectId`) REFERENCES `projects` (`projectId`);
+
+ALTER TABLE `comments` ADD FOREIGN KEY (`commentedBy`) REFERENCES `users` (`userName`);
+
+ALTER TABLE `comments` ADD FOREIGN KEY (`ticketID`) REFERENCES `tickets` (`ticketId`);
+
+ALTER TABLE `ticket_History` ADD FOREIGN KEY (`ticketId`) REFERENCES `tickets` (`ticketId`);
