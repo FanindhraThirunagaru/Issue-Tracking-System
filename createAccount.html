@@ -5,13 +5,19 @@
     <title>Create Account</title>
   </head>
   <body>
-    <form method="post">
+    <form action="register" method="post">
       <label>First Name</label>
       <input type="text" name="firstname" required>
       <label>Middle Name</label>
       <input type="text" name="middlename">
       <label>Last Name</label>
       <input type="text" name="lastname">
+      <label>Username</label>
+      <input type="text" name="userName" required>
+      <label>Email</label>
+      <input type="email" name="email" required>
+      <label>Password</label>
+      <input type="password" name="password" required>
       <button type="submit" name="CreateAccount">Create Account</button>
     </form>
     <a href="login">Already have a account?</a>
